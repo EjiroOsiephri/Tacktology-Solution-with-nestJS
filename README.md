@@ -36,7 +36,8 @@ cd Tacktology-Solution-with-nestJS
 
 Create a .env file in the project root with the following:
 
-```DATABASE_URL=postgresql://<user>:<password>@<host>/<database>?sslmode=require
+```
+DATABASE_URL=postgresql://<user>:<password>@<host>/<database>?sslmode=require
 JWT_SECRET=your-secure-secret-key-123456
 PORT=3000
 ALLOW_USER_AUTO_CREATE=true
