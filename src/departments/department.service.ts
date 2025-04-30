@@ -22,11 +22,9 @@ export class DepartmentService {
       );
     }
 
-    // Create and save the department first to ensure it has an ID
     const department = this.departmentRepository.create({ name: input.name });
     await this.departmentRepository.save(department);
 
-    // Create and save sub-departments, linking them to the saved department
     if (input.subDepartments) {
       department.subDepartments = [];
       for (const subDept of input.subDepartments) {
@@ -37,14 +35,13 @@ export class DepartmentService {
         }
         const subDepartment = this.subDepartmentRepository.create({
           name: subDept.name,
-          department, // Link to the saved department
+          department,
         });
         await this.subDepartmentRepository.save(subDepartment);
         department.subDepartments.push(subDepartment);
       }
     }
 
-    // Return the department with sub-departments loaded
     const foundDepartment = await this.departmentRepository.findOne({
       where: { id: department.id },
       relations: ['subDepartments'],

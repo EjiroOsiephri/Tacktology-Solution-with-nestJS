@@ -9,4 +9,5 @@ export declare class DepartmentResolver {
     getDepartments(): Promise<Department[]>;
     updateDepartment(id: number, input: UpdateDepartmentInput): Promise<Department>;
     deleteDepartment(id: number): Promise<boolean>;
+    removeDepartment(id: number): Promise<boolean>;
 }

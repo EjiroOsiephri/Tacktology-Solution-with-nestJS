@@ -36,4 +36,11 @@ export class DepartmentResolver {
   async deleteDepartment(@Args('id') id: number) {
     return this.departmentService.remove(id);
   }
+
+  // ✅ Newly added mutation (aliased name)
+  @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard)
+  async removeDepartment(@Args('id') id: number) {
+    return this.departmentService.remove(id);
+  }
 }

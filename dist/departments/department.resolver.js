@@ -37,6 +37,9 @@ let DepartmentResolver = class DepartmentResolver {
     async deleteDepartment(id) {
         return this.departmentService.remove(id);
     }
+    async removeDepartment(id) {
+        return this.departmentService.remove(id);
+    }
 };
 exports.DepartmentResolver = DepartmentResolver;
 __decorate([
@@ -71,6 +74,14 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], DepartmentResolver.prototype, "deleteDepartment", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => Boolean),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, graphql_1.Args)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], DepartmentResolver.prototype, "removeDepartment", null);
 exports.DepartmentResolver = DepartmentResolver = __decorate([
     (0, graphql_1.Resolver)(() => department_entity_1.Department),
     __metadata("design:paramtypes", [department_service_1.DepartmentService])

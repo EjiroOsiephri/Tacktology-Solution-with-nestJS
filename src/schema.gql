@@ -28,6 +28,7 @@ type Mutation {
   createDepartment(input: CreateDepartmentInput!): Department!
   updateDepartment(id: Float!, input: UpdateDepartmentInput!): Department!
   deleteDepartment(id: Float!): Boolean!
+  removeDepartment(id: Float!): Boolean!
   createSubDepartment(input: CreateSubDepartmentInput!): SubDepartment!
   updateSubDepartment(id: Float!, input: UpdateSubDepartmentInput!): SubDepartment!
   deleteSubDepartment(id: Float!): Boolean!
