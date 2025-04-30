@@ -1,11 +1,7 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+  <p align="center">A GraphQL API built with <a href="http://nestjs.com" target="_blank">NestJS</a> for managing departments and sub-departments, using TypeORM, PostgreSQL, and JWT authentication.</p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
@@ -18,81 +14,223 @@
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A NestJS GraphQL API for managing departments and sub-departments, featuring JWT authentication, TypeORM with PostgreSQL, and deployment on Render.com. This project allows users to create, update, delete, and query departments and their sub-departments securely.
+Repository: https://github.com/EjiroOsiephri/Tacktology-Solution-with-nestJS
 
-## Project setup
+# Project Setup
 
-```bash
-$ npm install
+# Clone the repository
+
+```git clone https://github.com/EjiroOsiephri/Tacktology-Solution-with-nestJS.git
+cd Tacktology-Solution-with-nestJS
 ```
 
-## Compile and run the project
+# Install dependencies
 
-```bash
-# development
-$ npm run start
+`npm install `
 
-# watch mode
-$ npm run start:dev
+# Environment Variables
 
-# production mode
-$ npm run start:prod
+Create a .env file in the project root with the following:
+
+```DATABASE_URL=postgresql://<user>:<password>@<host>/<database>?sslmode=require
+JWT_SECRET=your-secure-secret-key-123456
+PORT=3000
+ALLOW_USER_AUTO_CREATE=true
 ```
 
-## Run tests
+Replace DATABASE_URL with your PostgreSQL connection string (e.g., Neon).
 
-```bash
-# unit tests
-$ npm run test
+Use a secure JWT_SECRET for production.
 
-# e2e tests
-$ npm run test:e2e
+Set ALLOW_USER_AUTO_CREATE=false in production to disable automatic user creation.
 
-# test coverage
-$ npm run test:cov
+## Compile and Run the Project
+
+# Development
+
+```
+npm run start
+
+# Watch mode
+npm run start:dev
+
+# Production mode
+npm run start:prod
 ```
 
-## Deployment
+The GraphQL Playground is available at http://localhost:3000/graphql in development.
+Example GraphQL Queries/Mutations
+Test the API in GraphQL Playground (http://localhost:3000/graphql).
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# 1. Login (Obtain JWT)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+mutation {
+  login(input: { username: "admin", password: "password123" }) {
+    access_token
+  }
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Response:
 
-## Resources
+```{
+  "data": {
+    "login": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+  }
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+Set the Authorization header in GraphQL Playground:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```
+{
+  "Authorization": "Bearer <access_token>"
+}
+```
 
-## Support
+# 2. Create a Department
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+mutation {
+  createDepartment(input: {
+    name: "Finance"
+    subDepartments: [
+      { name: "Accounts" },
+      { name: "Payroll" }
+    ]
+  }) {
+    id
+    name
+    subDepartments {
+      id
+      name
+    }
+  }
+}
+```
 
-## Stay in touch
+# Response:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+{
+  "data": {
+    "createDepartment": {
+      "id": 1,
+      "name": "Finance",
+      "subDepartments": [
+        { "id": 1, "name": "Accounts" },
+        { "id": 2, "name": "Payroll" }
+      ]
+    }
+  }
+}
+```
 
-## License
+# 3. Query All Departments
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```
+query {
+  getDepartments {
+    id
+    name
+    subDepartments {
+      id
+      name
+    }
+  }
+}
+```
+
+# Response:
+
+```
+{
+  "data": {
+    "getDepartments": [
+      {
+        "id": 1,
+        "name": "Finance",
+        "subDepartments": [
+          { "id": 1, "name": "Accounts" },
+          { "id": 2, "name": "Payroll" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## 4. Query a Single Department
+
+```graphql
+query {
+  getDepartment(id: 1) {
+    id
+    name
+    subDepartments {
+      id
+      name
+    }
+  }
+}
+```
+
+# Response:
+
+```
+{
+  "data": {
+    "getDepartment": {
+      "id": 1,
+      "name": "Finance",
+      "subDepartments": [
+        { "id": 1, "name": "Accounts" },
+        { "id": 2, "name": "Payroll" }
+      ]
+    }
+  }
+}
+```
+
+# 5. Update a Department
+
+```
+mutation {
+  updateDepartment(id: 1, input: { name: "Finance Updated" }) {
+    id
+    name
+    subDepartments {
+      id
+      name
+    }
+  }
+}
+```
+
+# 6. Delete a Department
+
+```
+mutation {
+  removeDepartment(id: 1)
+}
+```
+
+# Run Tests
+
+```
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
